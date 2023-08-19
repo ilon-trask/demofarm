@@ -12,26 +12,35 @@ import {
   Tr,
   UnorderedList,
 } from "@chakra-ui/react";
-import { User } from "@prisma/client";
+import { User as PrismaUser } from "@prisma/client";
+import { User } from "@supabase/auth-helpers-nextjs";
 import React, { useEffect, useState } from "react";
 
 function FarmDataTable({
   farm,
   prismaUserData,
+  userData,
 }: {
   farm: DemonstrationFarmWithSpecialization;
-  prismaUserData: User | null;
+  prismaUserData: PrismaUser | null;
+  userData: User | null;
 }) {
   const { prismaUser, setPrismaUser } = usePrismaUserData();
+  const { user, setUser } = useUserData();
   const [prismaUserState, setPrismaUserState] = useState(prismaUserData);
+  const [userState, setUserState] = useState(userData);
   useEffect(() => {
     if (!prismaUserData) setPrismaUser(prismaUserData);
   }, []);
   useEffect(() => {
     if (prismaUser) setPrismaUserState(prismaUser);
   }, [JSON.stringify(prismaUser)]);
-
-  const { user } = useUserData();
+  useEffect(() => {
+    if (userData) setUser(userData);
+  }, []);
+  useEffect(() => {
+    if (user) setUserState(user);
+  }, [JSON.stringify(user)]);
   return (
     <TableContainer maxW={"800px"} mx={"auto"}>
       <Table>
@@ -81,22 +90,46 @@ function FarmDataTable({
             <Td>
               <List>
                 <ListItem>
-                  {prismaUserState
-                    ? prismaUserState.firstName +
+                  {prismaUserState ? (
+                    prismaUserState.firstName +
+                    " " +
+                    prismaUserState.secondName ? (
+                      prismaUserState.firstName +
                       " " +
                       prismaUserState.secondName
-                    : null}
+                    ) : (
+                      <br />
+                    )
+                  ) : null}
                 </ListItem>
                 <ListItem>
-                  {prismaUserState ? prismaUserState.position : null}
+                  {prismaUserState ? (
+                    prismaUserState.position ? (
+                      prismaUserState.position
+                    ) : (
+                      <br />
+                    )
+                  ) : null}
                 </ListItem>
                 <ListItem>
-                  {prismaUserState ? prismaUserState.workPhone : null}
+                  {prismaUserState ? (
+                    prismaUserState.workPhone ? (
+                      prismaUserState.workPhone
+                    ) : (
+                      <br />
+                    )
+                  ) : null}
                 </ListItem>
                 <ListItem>
-                  {prismaUserState ? prismaUserState.phone : null}
+                  {prismaUserState ? (
+                    prismaUserState.phone ? (
+                      prismaUserState.phone
+                    ) : (
+                      <br />
+                    )
+                  ) : null}
                 </ListItem>
-                <ListItem>{user?.email}</ListItem>
+                <ListItem>{userState?.email}</ListItem>
               </List>
             </Td>
           </Tr>

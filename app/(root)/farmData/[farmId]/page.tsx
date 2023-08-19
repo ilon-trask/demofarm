@@ -41,6 +41,7 @@ export default async function page({ params }: { params: { farmId: string } }) {
         regions={regions}
         farmId={params.farmId}
         prismaUserData={prismaUserData}
+        user={user}
       />
     </MyContainer>
   );
