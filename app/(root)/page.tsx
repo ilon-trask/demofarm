@@ -1,14 +1,37 @@
 import DemonstrationActivitiesTable from "@/app/(root)/(components)/DemonstrationActivitiesTable";
 import MyHeading from "@/components/ui/MyHeading";
 import MyText from "@/components/ui/MyText";
-// import ModalProvider from "@/providers/modal-provider";
-import MyButton from "@/components/ui/MyButton";
 import Div from "@/components/ui/Div";
 import MyContainer from "@/components/ui/MyContainer";
 import DemonstrationFarmsTable from "./(components)/DemonstrationFarmsTable";
 import TrainerTables from "./(components)/TrainerTables";
+import prismadb from "@/lib/prismadb";
+import { DemonstrationActivityWithUser } from "@/types/DemonstrationActivitiesTypes";
+import { DemonstrationFarmWithSpecialization } from "@/types/DemonstrationFarmsTypes";
 
-export default function Home() {
+export default async function Home() {
+  const activities: DemonstrationActivityWithUser[] | null =
+    await prismadb.demonstrationActivity.findMany({
+      include: {
+        user: true,
+      },
+    });
+  const farms: DemonstrationFarmWithSpecialization[] =
+    await prismadb.demonstrationFarm.findMany({
+      include: {
+        Enterprise: {
+          include: {
+            Region: true,
+          },
+        },
+        FarmSpecialization: {
+          include: {
+            AmountSpecialization: true,
+            Specialization: true,
+          },
+        },
+      },
+    });
   return (
     <MyContainer>
       <MyHeading>Демонстраційні заходи</MyHeading>
@@ -17,7 +40,10 @@ export default function Home() {
           <MyText>Фільтри</MyText>
         </Div>
         <Div>
-          <DemonstrationActivitiesTable />
+          <DemonstrationActivitiesTable
+            activities={activities}
+            isCabinet={false}
+          />
         </Div>
       </Div>
       <MyHeading>Демонстраційні ферми</MyHeading>
@@ -26,7 +52,7 @@ export default function Home() {
           <MyText>Фільтри</MyText>
         </Div>
         <Div>
-          <DemonstrationFarmsTable />
+          <DemonstrationFarmsTable isCabinet={false} farms={farms} />
         </Div>
       </Div>
       <MyHeading>Тренери</MyHeading>

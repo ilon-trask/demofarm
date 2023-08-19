@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Provider from "./Provider";
 import createServerClient from "@/lib/createServerClient";
+import prismadb from "@/lib/prismadb";
+import { User } from "@prisma/client";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,6 +20,15 @@ export default async function RootLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  let prismaUser: User | null = null;
+  if (user) {
+    prismaUser = await prismadb.user.findFirst({
+      where: {
+        sub: user.id,
+      },
+    });
+  }
+
   return (
     <html lang="uk">
       <body
@@ -26,7 +37,9 @@ export default async function RootLayout({
           minHeight: "100vh",
         }}
       >
-        <Provider user={user}>{children}</Provider>
+        <Provider user={user} prismaUser={prismaUser}>
+          {children}
+        </Provider>
       </body>
     </html>
   );

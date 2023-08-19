@@ -8,6 +8,8 @@ import ErrorText from "@/components/ui/ErrorText";
 import { useUserData } from "@/hooks/use_userData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { usePrismaUserData } from "@/hooks/use_prismaUserData ";
+import getPrismaUser from "./getPrismaUser";
 export default function Page() {
   const schema = z.object({
     email: z
@@ -34,12 +36,14 @@ export default function Page() {
   const router = useRouter();
   const [err, setErr] = useState("");
   const { setUser } = useUserData();
+  const { setPrismaUser } = usePrismaUserData();
   const onSubmit = async (res: { email: string; password: string }) => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: res.email,
       password: res.password,
     });
-
+    const prismaUser = await getPrismaUser(data.user?.id!);
+    setPrismaUser(prismaUser);
     if (!error) {
       await supabase.auth.getSession();
       router.push("/");

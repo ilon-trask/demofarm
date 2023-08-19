@@ -12,7 +12,11 @@ datasource db {
 
 model User {
   id                    Int                     @id @default(autoincrement())
-  sub                   Int
+  sub                   String
+  role                  String                  @default("user")
+  position              String?
+  workPhone             String?
+  phone                 String?
   firstName             String
   secondName            String
   DemonstrationActivity DemonstrationActivity[]
@@ -20,25 +24,33 @@ model User {
   Direction             Direction[]
   DemonstrationFarm     DemonstrationFarm[]
   Specialization        Specialization[]
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  Enterprise            Enterprise[]            @relation("User")
+  OwnEnterprise         Enterprise[]            @relation("Creator")
 
   @@index([sub])
 }
 
 model DemonstrationActivity {
-  id     Int      @id @default(autoincrement())
-  name   String
-  date   DateTime
-  user   User     @relation(fields: [userId], references: [id])
-  userId Int
+  id        Int      @id @default(autoincrement())
+  name      String
+  date      DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model DemonstrationFarm {
   id                 Int                  @id @default(autoincrement())
   name               String
-  specializtion      String
+  createdAt          DateTime             @default(now())
   FarmSpecialization FarmSpecialization[]
   user               User                 @relation(fields: [userId], references: [id])
   userId             Int
+  Enterprise         Enterprise?
 }
 
 model Specialization {
@@ -52,9 +64,9 @@ model Specialization {
 model FarmSpecialization {
   id                   Int                    @id @default(autoincrement())
   areaOrPopulation     Float
-  specialization       Specialization         @relation(fields: [specializationId], references: [id])
+  Specialization       Specialization         @relation(fields: [specializationId], references: [id])
   specializationId     Int
-  demonstrationFarm    DemonstrationFarm      @relation(fields: [demonstrationFarmId], references: [id])
+  DemonstrationFarm    DemonstrationFarm      @relation(fields: [demonstrationFarmId], references: [id])
   demonstrationFarmId  Int
   AmountSpecialization AmountSpecialization[]
 }
@@ -63,7 +75,7 @@ model AmountSpecialization {
   id                   Int                @id @default(autoincrement())
   year                 Int
   amount               Float
-  farmSpecialization   FarmSpecialization @relation(fields: [farmSpecializationId], references: [id])
+  FarmSpecialization   FarmSpecialization @relation(fields: [farmSpecializationId], references: [id])
   farmSpecializationId Int
 }
 
@@ -72,6 +84,7 @@ model Trainer {
   name      String
   direction String
   contact   String
+  createdAt DateTime    @default(now())
   user      User        @relation(fields: [userId], references: [id])
   userId    Int
   Direction Direction[]
@@ -80,7 +93,33 @@ model Trainer {
 model Direction {
   id      Int       @id @default(autoincrement())
   name    String
-  trainer Trainer[]
+  Trainer Trainer[]
   user    User?     @relation(fields: [userId], references: [id])
   userId  Int?
+}
+
+model Enterprise {
+  id                  Int               @id @default(autoincrement())
+  // name                String
+  code                Int               @unique
+  district            String
+  village             String
+  pagesOnInternet     String
+  pagesOnNetworks     String
+  DemonstrationFarm   DemonstrationFarm @relation(fields: [demonstrationFarmId], references: [id])
+  Creator             User              @relation("Creator", fields: [creatorId], references: [id])
+  creatorId           Int
+  User                User?             @relation("User", fields: [userId], references: [id])
+  userId              Int?
+  Region              Region            @relation(fields: [regionId], references: [id])
+  regionId            Int
+  demonstrationFarmId Int               @unique
+
+  @@index([userId, regionId, demonstrationFarmId, code])
+}
+
+model Region {
+  id         Int          @id @default(autoincrement())
+  name       String
+  Enterprise Enterprise[]
 }

@@ -1,8 +1,36 @@
 "use client";
-import { Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
-import React from "react";
-
-export default function DemonstrationFarmsTable() {
+import MyButton from "@/components/ui/MyButton";
+import { useFarmsData } from "@/hooks/use_farmsData";
+import { DemonstrationFarmWithSpecialization } from "@/types/DemonstrationFarmsTypes";
+import {
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+type props = { farms: DemonstrationFarmWithSpecialization[] } & (
+  | {
+      isCabinet: true;
+      setIsUpdate: Dispatch<SetStateAction<boolean>>;
+      setIsOpen: Dispatch<SetStateAction<boolean>>;
+    }
+  | { isCabinet: false }
+);
+export default function DemonstrationFarmsTable(props: props) {
+  const [farmsData, setFarmsData] = useState<
+    DemonstrationFarmWithSpecialization[]
+  >(props.farms);
+  const { farms, setFarms } = useFarmsData();
+  useEffect(() => {
+    if (!farms[0]) setFarms(farmsData);
+  }, []);
+  useEffect(() => setFarmsData(farms), [farms]);
+  const router = useRouter();
   return (
     <TableContainer maxW={"1100px"} mx={"auto"}>
       <Table>
@@ -11,9 +39,28 @@ export default function DemonstrationFarmsTable() {
             <Th>Назва</Th>
             <Th>Спеціалізація</Th>
             <Th>Інтегральний показник</Th>
+            {props.isCabinet && <Th>Інформація</Th>}
           </Tr>
         </Thead>
-        <Tbody></Tbody>
+        <Tbody>
+          {farmsData.map((el) => (
+            <Tr key={el.id}>
+              <Td>{el.name}</Td>
+              <Td></Td>
+              <Td>{}</Td>
+              {props.isCabinet && (
+                <Td>
+                  <MyButton
+                    size={"sm"}
+                    onClick={() => router.push(`/farmData/${el.id}`)}
+                  >
+                    Додати
+                  </MyButton>
+                </Td>
+              )}
+            </Tr>
+          ))}
+        </Tbody>
       </Table>
     </TableContainer>
   );
