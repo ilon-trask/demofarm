@@ -14,6 +14,7 @@ export default async function onSubmit({
     await prismadb.demonstrationFarm.create({
       data: { name, userId },
       include: {
+        WebResource: true,
         Enterprise: { include: { Region: true } },
         FarmSpecialization: {
           include: {

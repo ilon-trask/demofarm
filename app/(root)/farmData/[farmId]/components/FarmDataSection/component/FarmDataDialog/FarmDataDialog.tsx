@@ -21,14 +21,13 @@ import { usePrismaUserData } from "@/hooks/use_prismaUserData ";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserData } from "@/hooks/use_userData";
 import { useFarmsData } from "@/hooks/use_farmsData";
+import { useRouter } from "next/navigation";
 interface DataType {
   id?: number;
   code: number | string;
   regionId: number | string;
   district: string;
   village: string;
-  pagesOnInternet: string;
-  pagesOnNetworks: string;
   contacts: {
     name: string;
     position: string | null;
@@ -72,8 +71,8 @@ export default function FarmDataDialog({
       ),
     district: z.string().nonempty("Район не може бути пустим"),
     village: z.string().nonempty("Село не може бути пустим"),
-    pagesOnInternet: z.string(),
-    pagesOnNetworks: z.string(),
+    // pagesOnInternet: z.string(),
+    // pagesOnNetworks: z.string(),
     // contacts: z.array(
     //   z.object({
     //     name: z.string(),
@@ -96,8 +95,6 @@ export default function FarmDataDialog({
       regionId: "",
       district: "",
       village: "",
-      pagesOnInternet: "",
-      pagesOnNetworks: "",
     },
     //@ts-ignore
     values: enterprise
@@ -107,8 +104,6 @@ export default function FarmDataDialog({
           regionId: "",
           district: "",
           village: "",
-          pagesOnInternet: "",
-          pagesOnNetworks: "",
         },
     resolver: zodResolver(schema),
   });
@@ -131,6 +126,7 @@ export default function FarmDataDialog({
         position: prismaUser.position,
       });
   }, [JSON.stringify(prismaUser)]);
+  const router = useRouter();
   const ClientSubmit = async (data: DataType) => {
     console.log(data);
     if (!prismaUser) throw new Error("нема прізма юзера");
@@ -145,10 +141,9 @@ export default function FarmDataDialog({
       farm.id
     );
     if (res) updateFarm(res);
+    // router.refresh();
     setIsOpen(false);
     reset();
-    console.log(data);
-    console.log(typeof data.code);
   };
   return (
     <Dialog
@@ -238,7 +233,7 @@ export default function FarmDataDialog({
               {errors["village"] ? errors["village"].message : null}
             </ErrorText>
           </Div>
-          <Div>
+          {/* <Div>
             <Grid alignItems={"center"} templateColumns={"1fr 1fr"} gap={3}>
               Сторінки в Інтернеті
               <Div>
@@ -263,62 +258,44 @@ export default function FarmDataDialog({
                 ? errors["pagesOnNetworks"].message
                 : null}
             </ErrorText>
-          </Div>
+          </Div> */}
           <Div>
             <MyText fontWeight={"bold"}>Контактні дані</MyText>
             {/* {fields.map((el, ind) => (
-              <React.Fragment key={ind}>
+              <React.Fragment key={ind}> */}
+            <Div>
+              <Grid alignItems={"center"} templateColumns={"1fr 1fr"} gap={3}>
+                <MyText>П.І.Б</MyText>
                 <Div>
-                  <Grid
-                    alignItems={"center"}
-                    templateColumns={"1fr 1fr"}
-                    gap={3}
-                  >
-                    <MyText>П.І.Б</MyText>
-                    <Div>{el.name}</Div>
-                  </Grid>
+                  {prismaUser?.firstName + " " + prismaUser?.secondName}
                 </Div>
-                <Div>
-                  <Grid
-                    alignItems={"center"}
-                    templateColumns={"1fr 1fr"}
-                    gap={3}
-                  >
-                    <MyText> Посада контактної особи</MyText>
-                    <Div>{el.position}</Div>
-                  </Grid>
-                </Div>
-                <Div>
-                  <Grid
-                    alignItems={"center"}
-                    templateColumns={"1fr 1fr"}
-                    gap={3}
-                  >
-                    <MyText> Робочий телефон</MyText>
-                    <Div>{el.workPhone}</Div>
-                  </Grid>
-                </Div>
-                <Div>
-                  <Grid
-                    alignItems={"center"}
-                    templateColumns={"1fr 1fr"}
-                    gap={3}
-                  >
-                    <MyText>Телефон</MyText>
-                    <Div>{el.phone}</Div>
-                  </Grid>
-                </Div>
-                <Div>
-                  <Grid
-                    alignItems={"center"}
-                    templateColumns={"1fr 1fr"}
-                    gap={3}
-                  >
-                    <MyText> Email</MyText>
-                    <Div>{el.email}</Div>
-                  </Grid>
-                </Div>
-              </React.Fragment>
+              </Grid>
+            </Div>
+            <Div>
+              <Grid alignItems={"center"} templateColumns={"1fr 1fr"} gap={3}>
+                <MyText> Посада контактної особи</MyText>
+                <Div>{prismaUser?.position}</Div>
+              </Grid>
+            </Div>
+            <Div>
+              <Grid alignItems={"center"} templateColumns={"1fr 1fr"} gap={3}>
+                <MyText> Робочий телефон</MyText>
+                <Div>{prismaUser?.workPhone}</Div>
+              </Grid>
+            </Div>
+            <Div>
+              <Grid alignItems={"center"} templateColumns={"1fr 1fr"} gap={3}>
+                <MyText>Телефон</MyText>
+                <Div>{prismaUser?.phone}</Div>
+              </Grid>
+            </Div>
+            <Div>
+              <Grid alignItems={"center"} templateColumns={"1fr 1fr"} gap={3}>
+                <MyText> Email</MyText>
+                <Div>{user?.email}</Div>
+              </Grid>
+            </Div>
+            {/* </React.Fragment>
             ))} */}
           </Div>
           <Div>

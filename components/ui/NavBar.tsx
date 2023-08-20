@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { User } from "@supabase/auth-helpers-nextjs";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import supabase from "@/lib/supabase";
@@ -14,6 +14,12 @@ function NavBar({ user }: { user: User | null }) {
   const router = useRouter();
   const { user: userData, setUser } = useUserData();
   const { prismaUser } = usePrismaUserData();
+  useLayoutEffect(() => {
+    console.log("test");
+    console.log(userState);
+  }, []);
+  if (!prismaUser) console.log("не получилось");
+  console.log(prismaUser);
   useEffect(() => setUser(user), []);
   useEffect(() => setUserState(userData), [userData]);
 

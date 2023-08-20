@@ -67,11 +67,31 @@ function FarmDataTable({
           </Tr>
           <Tr>
             <Td fontWeight={"bold"}>Сторінки в Інтернеті</Td>
-            <Td>{farm.Enterprise?.pagesOnInternet}</Td>
+            <Td>
+              {farm.WebResource.filter(
+                (el) => el.type == "Сторінка в інтернеті"
+              ).map((el) => (
+                <React.Fragment key={el.id}>
+                  {el.name}
+                  <br />
+                  {el.link}
+                </React.Fragment>
+              ))}
+            </Td>
           </Tr>
           <Tr>
             <Td fontWeight={"bold"}>Сторінки в соціальних мережах</Td>
-            <Td>{farm.Enterprise?.pagesOnNetworks}</Td>
+            <Td>
+              {farm.WebResource.filter(
+                (el) => el.type == "Сторінка в соц. мережі"
+              ).map((el) => (
+                <React.Fragment key={el.id}>
+                  {el.name}
+                  <br />
+                  {el.link}
+                </React.Fragment>
+              ))}
+            </Td>
           </Tr>
           <Tr>
             <Td fontWeight={"bold"}>Контактні дані:</Td>

@@ -8,30 +8,15 @@ import TrainerTables from "./(components)/TrainerTables";
 import prismadb from "@/lib/prismadb";
 import { DemonstrationActivityWithUser } from "@/types/DemonstrationActivitiesTypes";
 import { DemonstrationFarmWithSpecialization } from "@/types/DemonstrationFarmsTypes";
+import { getDemonstrationFarms } from "@/hooks/getDemonstrationFarms";
 
 export default async function Home() {
   const activities: DemonstrationActivityWithUser[] | null =
     await prismadb.demonstrationActivity.findMany({
-      include: {
-        user: true,
-      },
+      include: { user: true },
     });
   const farms: DemonstrationFarmWithSpecialization[] =
-    await prismadb.demonstrationFarm.findMany({
-      include: {
-        Enterprise: {
-          include: {
-            Region: true,
-          },
-        },
-        FarmSpecialization: {
-          include: {
-            AmountSpecialization: true,
-            Specialization: true,
-          },
-        },
-      },
-    });
+    await getDemonstrationFarms();
   return (
     <MyContainer>
       <MyHeading>Демонстраційні заходи</MyHeading>

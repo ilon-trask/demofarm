@@ -32,7 +32,7 @@ function FarmDataSection({
   return (
     <>
       <FarmDataTable
-        farm={farm}
+        farm={farmState}
         prismaUserData={prismaUserData}
         userData={user}
       />

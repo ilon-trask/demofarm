@@ -2,7 +2,7 @@
 import NavBar from "@/components/ui/NavBar";
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { User } from "@supabase/auth-helpers-nextjs";
 import ModalProvider from "@/providers/modal-provider";
 import { User as PrismaUser } from "@prisma/client";
@@ -17,7 +17,7 @@ function Provider({
   prismaUser: PrismaUser | null;
 }) {
   const { setPrismaUser: setUser } = usePrismaUserData();
-  useEffect(() => setUser(prismaUser), [prismaUser]);
+  useLayoutEffect(() => setUser(prismaUser), [prismaUser]);
   return (
     <CacheProvider>
       <ChakraProvider>

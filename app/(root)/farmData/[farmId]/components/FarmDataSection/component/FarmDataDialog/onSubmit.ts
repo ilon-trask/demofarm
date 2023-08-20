@@ -1,4 +1,5 @@
 "use server";
+import { getDemonstrationFarm } from "@/hooks/getDemonstrationFarms";
 import prismadb from "@/lib/prismadb";
 import { DemonstrationFarmWithSpecialization } from "@/types/DemonstrationFarmsTypes";
 
@@ -9,8 +10,6 @@ export default async function onSubmit(
     regionId: number;
     district: string;
     village: string;
-    pagesOnInternet: string;
-    pagesOnNetworks: string;
   },
   userId: number,
   farmId: number
@@ -28,15 +27,7 @@ export default async function onSubmit(
       where: { id: data.id },
     });
     const res: DemonstrationFarmWithSpecialization | null =
-      await prismadb.demonstrationFarm.findFirst({
-        where: { id: farmId },
-        include: {
-          Enterprise: { include: { Region: true } },
-          FarmSpecialization: {
-            include: { AmountSpecialization: true, Specialization: true },
-          },
-        },
-      });
+      await getDemonstrationFarm(farmId);
     return res;
   } else {
     await prismadb.enterprise.create({
@@ -47,15 +38,7 @@ export default async function onSubmit(
       },
     });
     const res: DemonstrationFarmWithSpecialization | null =
-      await prismadb.demonstrationFarm.findFirst({
-        where: { id: farmId },
-        include: {
-          Enterprise: { include: { Region: true } },
-          FarmSpecialization: {
-            include: { AmountSpecialization: true, Specialization: true },
-          },
-        },
-      });
+      await getDemonstrationFarm(farmId);
     return res;
   }
 }

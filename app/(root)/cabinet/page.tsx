@@ -11,6 +11,7 @@ import { DemonstrationActivityWithUser } from "@/types/DemonstrationActivitiesTy
 import { DemonstrationFarmWithSpecialization } from "@/types/DemonstrationFarmsTypes";
 import DemonstrationFarmsSection from "./(components)/DemonstrationFarmsSection/DemonstrationFarmsSection";
 import UserDataSection from "./(components)/UserDataSection/UserDataSection";
+import { getDemonstrationFarms } from "@/hooks/getDemonstrationFarms";
 
 export default async function Page() {
   const supabase = createServerClient();
@@ -28,18 +29,7 @@ export default async function Page() {
       where: { user: { sub: user.id } },
     });
   const farms: DemonstrationFarmWithSpecialization[] =
-    await prismadb.demonstrationFarm.findMany({
-      include: {
-        Enterprise: { include: { Region: true } },
-        FarmSpecialization: {
-          include: {
-            AmountSpecialization: true,
-            Specialization: true,
-          },
-        },
-      },
-      where: { user: { sub: user.id } },
-    });
+    await getDemonstrationFarms();
 
   return (
     <MyContainer>
