@@ -10,15 +10,16 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-export default function TrainerTables() {
+export default function PartnersTable() {
   return (
     <TableContainer maxW={"1100px"} mx={"auto"}>
       <Table>
         <Thead>
           <Tr>
-            <Th>П.І.Б</Th>
-            <Th>Напрямок</Th>
-            <Th>Контакт</Th>
+            <Th>Назва</Th>
+            <Th>Проекти</Th>
+            <Th>Статус проекту</Th>
+            <Th>Контакти</Th>
           </Tr>
         </Thead>
         <Tbody>

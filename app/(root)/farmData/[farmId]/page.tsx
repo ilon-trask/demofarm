@@ -17,6 +17,7 @@ import FarmTabs from "./components/FarmTabs";
 import FarmPagesSection from "./components/FarmPagesSection/FarmPagesSection";
 import { getDemonstrationFarm } from "@/hooks/getDemonstrationFarms";
 import { DemonstrationFarmWithSpecialization } from "@/types/DemonstrationFarmsTypes";
+import Quiz from "./components/Quiz/Quiz";
 
 export default async function page({ params }: { params: { farmId: string } }) {
   const farm: DemonstrationFarmWithSpecialization | null =
@@ -34,6 +35,12 @@ export default async function page({ params }: { params: { farmId: string } }) {
 
   return (
     <MyContainer>
+      <Quiz
+        regions={regions}
+        farm={farm}
+        prismaUser={prismaUserData}
+        user={user}
+      />
       <MyHeading>Загальна інформація про господарство/підприємство</MyHeading>
       <FarmDataSection
         farm={farm}

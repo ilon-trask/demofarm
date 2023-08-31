@@ -43,23 +43,31 @@ export default function DemonstrationFarmsTable(props: props) {
           </Tr>
         </Thead>
         <Tbody>
-          {farmsData.map((el) => (
-            <Tr key={el.id}>
-              <Td>{el.name}</Td>
+          {farmsData.length > 0 ? (
+            farmsData.map((el) => (
+              <Tr key={el.id}>
+                <Td>{el.name}</Td>
+                <Td></Td>
+                <Td>{}</Td>
+                {props.isCabinet && (
+                  <Td>
+                    <MyButton
+                      size={"sm"}
+                      onClick={() => router.push(`/farmData/${el.id}`)}
+                    >
+                      Додати
+                    </MyButton>
+                  </Td>
+                )}
+              </Tr>
+            ))
+          ) : (
+            <Tr>
               <Td></Td>
-              <Td>{}</Td>
-              {props.isCabinet && (
-                <Td>
-                  <MyButton
-                    size={"sm"}
-                    onClick={() => router.push(`/farmData/${el.id}`)}
-                  >
-                    Додати
-                  </MyButton>
-                </Td>
-              )}
+              <Td>Немає данних</Td>
+              <Td></Td>
             </Tr>
-          ))}
+          )}
         </Tbody>
       </Table>
     </TableContainer>

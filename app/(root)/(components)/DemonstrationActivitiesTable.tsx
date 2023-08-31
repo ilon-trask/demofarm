@@ -43,13 +43,21 @@ export default function DemonstrationActivitiesTable(props: props) {
           </Tr>
         </Thead>
         <Tbody>
-          {activitiesData.map((el) => (
-            <Tr key={el.id}>
-              <Td>{useGetDateFromDate(el.date)}</Td>
-              <Td>{el.name}</Td>
-              <Td>{el.user.firstName + " " + el.user.secondName}</Td>
+          {activitiesData.length > 0 ? (
+            activitiesData.map((el) => (
+              <Tr key={el.id}>
+                <Td>{useGetDateFromDate(el.date)}</Td>
+                <Td>{el.name}</Td>
+                <Td>{el.user.firstName + " " + el.user.secondName}</Td>
+              </Tr>
+            ))
+          ) : (
+            <Tr>
+              <Td></Td>
+              <Td>Немає данних</Td>
+              <Td></Td>
             </Tr>
-          ))}
+          )}
         </Tbody>
       </Table>
     </TableContainer>

@@ -8,6 +8,10 @@ import { useUserData } from "@/hooks/use_userData";
 import { usePrismaUserData } from "@/hooks/use_prismaUserData ";
 import UserDataModal from "../modals/UserDataModal/UserDataModal";
 import { useUserDataModal } from "@/hooks/use-userData-modal";
+import Image from "next/image";
+import klsjdf from "../../public/logo.jpg";
+import MyHeading from "./MyHeading";
+
 function NavBar({ user }: { user: User | null }) {
   const [userState, setUserState] = useState(user);
   const { onOpen } = useUserDataModal();
@@ -24,18 +28,28 @@ function NavBar({ user }: { user: User | null }) {
   useEffect(() => setUserState(userData), [userData]);
 
   return (
-    <Flex justifyContent={"space-between"} p={3}>
+    <Flex justifyContent={"space-between"} alignItems={"center"} p={3}>
       <UserDataModal />
-      <Box>
-        <Heading
+      <Flex
+        alignItems={"center"}
+        cursor={"pointer"}
+        onClick={() => {
+          router.push("/");
+        }}
+      >
+        <Image src={"/logo.jpg"} alt="лого" width={256} height={59} />
+        <MyHeading fontSize={"24px"}>
+          Вчитися і вчити – прагнення досконалості!
+        </MyHeading>
+        {/* <Heading
           cursor={"pointer"}
           onClick={() => {
             router.push("/");
           }}
         >
           DemoFarm
-        </Heading>
-      </Box>
+        </Heading> */}
+      </Flex>
       {userState ? (
         <Box>
           {/* <Icon viewBox="40">
