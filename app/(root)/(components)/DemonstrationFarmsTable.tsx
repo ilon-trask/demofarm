@@ -1,5 +1,7 @@
 "use client";
+import MyViewIcon from "@/components/ui/Icons/MyViewIcon";
 import MyButton from "@/components/ui/MyButton";
+import MyText from "@/components/ui/MyText";
 import { useFarmsData } from "@/hooks/use_farmsData";
 import { DemonstrationFarmWithSpecialization } from "@/types/DemonstrationFarmsTypes";
 import {
@@ -46,7 +48,15 @@ export default function DemonstrationFarmsTable(props: props) {
           {farmsData.length > 0 ? (
             farmsData.map((el) => (
               <Tr key={el.id}>
-                <Td>{el.name}</Td>
+                <Td>
+                  <MyText
+                    cursor={"pointer"}
+                    fontWeight={"semibold"}
+                    onClick={() => router.push("/farmDataView/" + el.id)}
+                  >
+                    <MyViewIcon /> {el.name}
+                  </MyText>
+                </Td>
                 <Td></Td>
                 <Td>{}</Td>
                 {props.isCabinet && (

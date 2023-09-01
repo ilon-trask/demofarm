@@ -54,8 +54,6 @@ export function FarmDataDialogContent({
   register,
   prismaUser,
   errors,
-  ClientSubmit,
-  handleSubmit,
   control,
   farm,
   user,
@@ -64,8 +62,6 @@ export function FarmDataDialogContent({
   register: UseFormRegister<FarmDataType>;
   prismaUser: PrismaUser | null | undefined;
   errors: FieldErrors<FarmDataType>;
-  handleSubmit: UseFormHandleSubmit<FarmDataType, undefined>;
-  ClientSubmit: (data: FarmDataType) => void;
   control: Control<FarmDataType, any>;
   farm: DemonstrationFarm;
   user: User | null;
@@ -330,11 +326,9 @@ export default function FarmDataDialog({
       <ModalHeader>Загальна інформація</ModalHeader>
       <ModalBody>
         <FarmDataDialogContent
-          ClientSubmit={ClientSubmit}
           control={control}
           errors={errors}
           farm={farm}
-          handleSubmit={handleSubmit}
           prismaUser={prismaUser}
           regions={regions}
           register={register}

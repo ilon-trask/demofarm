@@ -30,7 +30,7 @@ export default function FarmSpecializationSection() {
             </Tr>
             <Tr borderWidth={"2px"}>
               <Td>
-                Вартістьактивів підприємства <br />
+                Вартість активів підприємства <br />
                 станом на кінець {}року,грн
               </Td>
               <Td></Td>

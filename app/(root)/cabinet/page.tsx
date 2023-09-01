@@ -12,6 +12,7 @@ import { DemonstrationFarmWithSpecialization } from "@/types/DemonstrationFarmsT
 import DemonstrationFarmsSection from "./(components)/DemonstrationFarmsSection/DemonstrationFarmsSection";
 import UserDataSection from "./(components)/UserDataSection/UserDataSection";
 import { getDemonstrationFarms } from "@/hooks/getDemonstrationFarms";
+import BusinessPlanSection from "./(components)/BusinessPlanSection/BusinessPlanSection";
 
 export default async function Page() {
   const supabase = createServerClient();
@@ -43,6 +44,8 @@ export default async function Page() {
       <MyHeading>Мої заявки тренера</MyHeading>
       <TrainerTables />
       <TrainerDialog />
+      <MyHeading>Мій бізнес-план</MyHeading>
+      <BusinessPlanSection />
     </MyContainer>
   );
 }
