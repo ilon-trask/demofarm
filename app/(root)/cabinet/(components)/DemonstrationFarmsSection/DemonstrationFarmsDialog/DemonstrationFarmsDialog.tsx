@@ -47,6 +47,7 @@ export default function DemonstrationFarmsDialog({
   const ClientSubmit = async (data: { name: string }) => {
     if (!prismaUser) throw new Error("Немає прізма юзера");
     const res = await onSubmit({ name: data.name, userId: prismaUser.id });
+    //@ts-ignore
     setNewFarms(res);
     reset();
     setIsOpen(false);

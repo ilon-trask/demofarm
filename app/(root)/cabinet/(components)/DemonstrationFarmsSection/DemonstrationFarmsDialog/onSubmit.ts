@@ -10,6 +10,7 @@ export default async function onSubmit({
   name: string;
   userId: number;
 }) {
+  //@ts-ignore
   const res: DemonstrationFarmWithSpecialization | null =
     await prismadb.demonstrationFarm.create({
       data: { name, userId },
