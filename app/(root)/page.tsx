@@ -14,8 +14,12 @@ import TerritorialCommunitiesTable from "./(components)/TerritorialCommunitiesTa
 import PartnersTable from "./(components)/PartnersTable";
 import createServerClient from "@/lib/createServerClient";
 import Image from "next/image";
-import MyButton from "@/components/ui/MyButton";
 import CommunityTable from "./(components)/CommunityTable";
+import BusinessPlanSection from "./cabinet/(components)/BusinessPlanSection/BusinessPlanSection";
+import MyButton from "@/components/ui/MyButton";
+import MainDemonstrationActivitiesSection from "./cabinet/(components)/MainDemonstrationActivitiesSection/MainDemonstrationActivitiesSection";
+import getRegions from "@/hooks/getRegions";
+import TableFilters from "./cabinet/(components)/TableFilters";
 
 export default async function Home() {
   const activities: DemonstrationActivityWithUser[] | null =
@@ -24,6 +28,7 @@ export default async function Home() {
     });
   const farms: DemonstrationFarmWithSpecialization[] =
     await getDemonstrationFarms();
+  const regions = await getRegions();
   const supabase = createServerClient();
   const {
     data: { user },
@@ -90,6 +95,15 @@ export default async function Home() {
                 <PartnersTable />
               </Div>
             </Div>
+            <MyHeading>Бізнес-план</MyHeading>
+            <Div display={"grid"} gridTemplateColumns={"1fr 3fr"}>
+              <Div>
+                <MyText>Фільтри</MyText>
+              </Div>
+              <Div>
+                <BusinessPlanSection showTags={false} />
+              </Div>
+            </Div>
           </MyContainer>
         </>
       ) : (
@@ -106,40 +120,95 @@ export default async function Home() {
             color={"white"}
           >
             <MyText>Заходи УМДФ</MyText>
-            <MyText>Демо ферми УМДФ</MyText>
+            <MyText>Демоферми УМДФ</MyText>
             <MyText>Тренери УМДФ</MyText>
             <MyText>Спільнота УМДФ</MyText>
           </Div>
-          <MyContainer color={"#289D4E"}>
+          <MyContainer color={"#548135"}>
             <Image
               src={"/content.jpg"}
               alt="контент"
               width={1555}
               height={1456}
             />
-            <MyHeading textAlign={"left"}>Заходи УМДФ</MyHeading>
-            <Div>
-              <DemonstrationActivitiesTable
+            <MyHeading textAlign={"left"} mt={"50px"}>
+              Заходи УМДФ
+            </MyHeading>
+            <Div mt={"30px"}>
+              <MainDemonstrationActivitiesSection
                 activities={activities}
-                isCabinet={false}
+                regions={regions}
               />
-              {/* <MyButton></MyButton> */}
             </Div>
-            <MyHeading textAlign={"left"}>Демо ферми УМДФ</MyHeading>
-            <Div>
+            <MyHeading textAlign={"left"} mt={"50px"}>
+              Демоферми УМДФ
+            </MyHeading>
+            <Div mt={"30px"}>
               <Div>
+                <TableFilters regions={regions} />
                 <DemonstrationFarmsTable isCabinet={false} farms={farms} />
+                <MyButton
+                  backgroundColor={"#cae9b7"}
+                  _hover={{ backgroundColor: "#a7c297" }}
+                >
+                  Геопортал УМДФ
+                </MyButton>
+                <MyButton
+                  backgroundColor={"#cae9b7"}
+                  _hover={{ backgroundColor: "#a7c297" }}
+                  ml={4}
+                >
+                  Переглянути всі Демо ферми
+                </MyButton>
+                <MyButton
+                  backgroundColor={"#cae9b7"}
+                  _hover={{ backgroundColor: "#a7c297" }}
+                  ml={4}
+                >
+                  Приєднатися до УМДФ та створити свою демоферму
+                </MyButton>
               </Div>
             </Div>
-            <MyHeading textAlign={"left"}>Тренери УМДФ</MyHeading>
-            <Div>
+            <MyHeading textAlign={"left"} mt={"50px"}>
+              Тренери УМДФ
+            </MyHeading>
+            <Div mt={"30px"}>
               <Div>
+                <TableFilters regions={regions} />
                 <TrainerTables />
+                <MyButton
+                  backgroundColor={"#cae9b7"}
+                  _hover={{ backgroundColor: "#a7c297" }}
+                >
+                  Переглянути усіх тренерів УМДФ
+                </MyButton>
+                <MyButton
+                  backgroundColor={"#cae9b7"}
+                  _hover={{ backgroundColor: "#a7c297" }}
+                  ml={4}
+                >
+                  Приєднатися до УМДФ та стати тренером
+                </MyButton>
               </Div>
             </Div>
-            <MyHeading textAlign={"left"}>Спільнота УМДФ</MyHeading>
-            <Div>
+            <MyHeading textAlign={"left"} mt={"50px"}>
+              Спільнота УМДФ
+            </MyHeading>
+            <Div mt={"30px"}>
               <CommunityTable />
+              <MyButton
+                backgroundColor={"#cae9b7"}
+                _hover={{ backgroundColor: "#a7c297" }}
+              >
+                Переглянути усіх партнерів УМДФ
+              </MyButton>
+              <MyButton
+                backgroundColor={"#cae9b7"}
+                _hover={{ backgroundColor: "#a7c297" }}
+                ml={4}
+              >
+                Приєднатися до УМДФ та стати партнером
+              </MyButton>
             </Div>
           </MyContainer>
         </>

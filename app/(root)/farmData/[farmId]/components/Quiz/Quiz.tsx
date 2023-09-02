@@ -84,7 +84,7 @@ const Round = (props: BoxProps) => (
     {props.children}
   </Div>
 );
-const Specializations = [
+export const Specializations = [
   "М’ясо ВРХ",
   "М’ясо свиней",
   "Молоко",

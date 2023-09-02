@@ -49,13 +49,17 @@ export default function DemonstrationFarmsTable(props: props) {
             farmsData.map((el) => (
               <Tr key={el.id}>
                 <Td>
-                  <MyText
-                    cursor={"pointer"}
-                    fontWeight={"semibold"}
-                    onClick={() => router.push("/farmDataView/" + el.id)}
-                  >
-                    <MyViewIcon /> {el.name}
-                  </MyText>
+                  {props.isCabinet ? (
+                    <MyText
+                      cursor={"pointer"}
+                      fontWeight={"semibold"}
+                      onClick={() => router.push("/farmDataView/" + el.id)}
+                    >
+                      <MyViewIcon /> {el.name}
+                    </MyText>
+                  ) : (
+                    <MyText>{el.name}</MyText>
+                  )}
                 </Td>
                 <Td></Td>
                 <Td>{}</Td>
