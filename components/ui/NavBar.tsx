@@ -9,8 +9,8 @@ import { usePrismaUserData } from "@/hooks/use_prismaUserData ";
 import UserDataModal from "../modals/UserDataModal/UserDataModal";
 import { useUserDataModal } from "@/hooks/use-userData-modal";
 import Image from "next/image";
-import klsjdf from "../../public/logo.jpg";
 import MyHeading from "./MyHeading";
+import Div from "./Div";
 
 function NavBar({ user }: { user: User | null }) {
   const [userState, setUserState] = useState(user);
@@ -30,17 +30,37 @@ function NavBar({ user }: { user: User | null }) {
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"} p={3}>
       <UserDataModal />
-      <Flex
-        alignItems={"center"}
-        cursor={"pointer"}
-        onClick={() => {
-          router.push("/");
-        }}
-      >
-        <Image src={"/logo.jpg"} alt="лого" width={256} height={59} />
-        <MyHeading fontSize={"24px"}>
-          Вчитися і вчити – прагнення досконалості!
-        </MyHeading>
+      <Flex alignItems={"center"}>
+        <Div cursor={"pointer"}>
+          <Image
+            onClick={() => {
+              router.push("/");
+            }}
+            src={"/logo.jpg"}
+            alt="лого"
+            width={256}
+            height={59}
+          />
+        </Div>
+        <Div>
+          <MyHeading fontSize={"24px"}>
+            Вчитися і вчити – прагнення досконалості!
+          </MyHeading>
+          <Div cursor={"pointer"} display={"flex"} gap={3}>
+            <Image
+              src={"/facebook_logo.png"}
+              alt="fakebook logo"
+              width={18}
+              height={18}
+            />
+            <Image
+              src={"/youtube-logosvg.svg"}
+              alt="youtube logo"
+              width={25}
+              height={25}
+            ></Image>
+          </Div>
+        </Div>
         {/* <Heading
           cursor={"pointer"}
           onClick={() => {

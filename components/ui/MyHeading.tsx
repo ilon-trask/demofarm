@@ -1,10 +1,12 @@
 "use client";
 import { Heading, HeadingProps } from "@chakra-ui/react";
-import React from "react";
-
-function MyHeading(props: HeadingProps) {
+import React, { MutableRefObject } from "react";
+interface props extends HeadingProps {
+  aref?: MutableRefObject<any> | undefined;
+}
+function MyHeading(props: props) {
   return (
-    <Heading textAlign={"center"} {...props}>
+    <Heading textAlign={"center"} {...props} ref={props.aref}>
       {props.children}
     </Heading>
   );

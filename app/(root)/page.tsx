@@ -20,6 +20,8 @@ import MyButton from "@/components/ui/MyButton";
 import MainDemonstrationActivitiesSection from "./cabinet/(components)/MainDemonstrationActivitiesSection/MainDemonstrationActivitiesSection";
 import getRegions from "@/hooks/getRegions";
 import TableFilters from "./cabinet/(components)/TableFilters";
+import ContentButtons from "./(components)/ContentButtons";
+import NonAuthMainPage from "./(components)/NonAuthMainPage";
 
 export default async function Home() {
   const activities: DemonstrationActivityWithUser[] | null =
@@ -33,6 +35,7 @@ export default async function Home() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
   return (
     <>
       {user ? (
@@ -107,111 +110,11 @@ export default async function Home() {
           </MyContainer>
         </>
       ) : (
-        <>
-          <Div
-            display={"flex"}
-            justifyContent={"end"}
-            gap={"15px"}
-            fontWeight={"bold"}
-            fontSize={"20px"}
-            background={"#289D4E"}
-            px={5}
-            py={5}
-            color={"white"}
-          >
-            <MyText>Заходи УМДФ</MyText>
-            <MyText>Демоферми УМДФ</MyText>
-            <MyText>Тренери УМДФ</MyText>
-            <MyText>Спільнота УМДФ</MyText>
-          </Div>
-          <MyContainer color={"#548135"}>
-            <Image
-              src={"/content.jpg"}
-              alt="контент"
-              width={1555}
-              height={1456}
-            />
-            <MyHeading textAlign={"left"} mt={"50px"}>
-              Заходи УМДФ
-            </MyHeading>
-            <Div mt={"30px"}>
-              <MainDemonstrationActivitiesSection
-                activities={activities}
-                regions={regions}
-              />
-            </Div>
-            <MyHeading textAlign={"left"} mt={"50px"}>
-              Демоферми УМДФ
-            </MyHeading>
-            <Div mt={"30px"}>
-              <Div>
-                <TableFilters regions={regions} />
-                <DemonstrationFarmsTable isCabinet={false} farms={farms} />
-                <MyButton
-                  backgroundColor={"#cae9b7"}
-                  _hover={{ backgroundColor: "#a7c297" }}
-                >
-                  Геопортал УМДФ
-                </MyButton>
-                <MyButton
-                  backgroundColor={"#cae9b7"}
-                  _hover={{ backgroundColor: "#a7c297" }}
-                  ml={4}
-                >
-                  Переглянути всі Демо ферми
-                </MyButton>
-                <MyButton
-                  backgroundColor={"#cae9b7"}
-                  _hover={{ backgroundColor: "#a7c297" }}
-                  ml={4}
-                >
-                  Приєднатися до УМДФ та створити свою демоферму
-                </MyButton>
-              </Div>
-            </Div>
-            <MyHeading textAlign={"left"} mt={"50px"}>
-              Тренери УМДФ
-            </MyHeading>
-            <Div mt={"30px"}>
-              <Div>
-                <TableFilters regions={regions} />
-                <TrainerTables />
-                <MyButton
-                  backgroundColor={"#cae9b7"}
-                  _hover={{ backgroundColor: "#a7c297" }}
-                >
-                  Переглянути усіх тренерів УМДФ
-                </MyButton>
-                <MyButton
-                  backgroundColor={"#cae9b7"}
-                  _hover={{ backgroundColor: "#a7c297" }}
-                  ml={4}
-                >
-                  Приєднатися до УМДФ та стати тренером
-                </MyButton>
-              </Div>
-            </Div>
-            <MyHeading textAlign={"left"} mt={"50px"}>
-              Спільнота УМДФ
-            </MyHeading>
-            <Div mt={"30px"}>
-              <CommunityTable />
-              <MyButton
-                backgroundColor={"#cae9b7"}
-                _hover={{ backgroundColor: "#a7c297" }}
-              >
-                Переглянути усіх партнерів УМДФ
-              </MyButton>
-              <MyButton
-                backgroundColor={"#cae9b7"}
-                _hover={{ backgroundColor: "#a7c297" }}
-                ml={4}
-              >
-                Приєднатися до УМДФ та стати партнером
-              </MyButton>
-            </Div>
-          </MyContainer>
-        </>
+        <NonAuthMainPage
+          activities={activities}
+          farms={farms}
+          regions={regions}
+        />
       )}
     </>
   );
